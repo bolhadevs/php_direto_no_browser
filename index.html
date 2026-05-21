@@ -71,9 +71,6 @@ echo "Olá #bolhadev";
   <h5>Output</h5>
   <pre id="output"></pre>
 
-  <h5>Error</h5>
-  <pre id="error"></pre>
-
 </div>
 
 <script>
@@ -91,7 +88,6 @@ function runPHP(code){
   setLoading(true);
 
   $("#output").text("");
-  $("#error").text("");
 
   clearPHP();
 
@@ -100,7 +96,6 @@ function runPHP(code){
   script.innerHTML = code;
 
   script.setAttribute("data-stdout", "#output");
-  script.setAttribute("data-stderr", "#error");
 
   document.body.appendChild(script);
 
