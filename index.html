@@ -142,43 +142,49 @@ $("#fileInput").on("change", function(e){
 // DRAG & DROP FUNCIONANDO
 // =========================
 
-// impede o browser de abrir arquivo sozinho
-window.addEventListener("dragover", e => e.preventDefault());
-window.addEventListener("drop", e => e.preventDefault());
 
-const dropzone = document.getElementById("dropzone");
+$(document).ready(function () {
+  // impede o browser de abrir arquivo sozinho
+  $(window).on("dragover drop", function (e) {
+    e.preventDefault();
+  });
 
-dropzone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  dropzone.classList.add("dragover");
-});
+  const $dropzone = $("#dropzone");
 
-dropzone.addEventListener("dragleave", () => {
-  dropzone.classList.remove("dragover");
-});
+  $dropzone.on("dragover", function (e) {
+    e.preventDefault();
+    $dropzone.addClass("dragover");
+  });
 
-dropzone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  dropzone.classList.remove("dragover");
+  $dropzone.on("dragleave", function () {
+    $dropzone.removeClass("dragover");
+  });
 
-  const file = e.dataTransfer.files?.[0];
-  if (!file) return;
+  $dropzone.on("drop", function (e) {
+    e.preventDefault();
+    $dropzone.removeClass("dragover");
 
-  if (!file.name.endsWith(".php")) {
-    alert("Apenas arquivos .php são suportados.");
-    return;
-  }
+    const file = e.originalEvent.dataTransfer.files?.[0];
 
-  const reader = new FileReader();
+    if (!file) return;
 
-  reader.onload = (ev) => {
-    const content = ev.target.result;
+    if (!file.name.endsWith(".php")) {
+      alert("Apenas arquivos .php são suportados.");
+      return;
+    }
 
-    $("#editor").val(content); // 🔥 abre no textarea
-    runPHP(content);           // executa
-  };
+    const reader = new FileReader();
 
-  reader.readAsText(file);
+    reader.onload = function (ev) {
+      const content = ev.target.result;
+
+      $("#editor").val(content); // abre no textarea
+      runPHP(content);           // executa
+    };
+
+    reader.readAsText(file);
+  });
+
 });
 </script>
 
